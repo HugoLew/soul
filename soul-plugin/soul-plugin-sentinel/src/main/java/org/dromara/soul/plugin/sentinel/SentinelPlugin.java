@@ -56,6 +56,7 @@ public class SentinelPlugin extends AbstractSoulPlugin {
         assert soulContext != null;
         String resourceName = SentinelRuleHandle.getResourceName(rule);
         SentinelHandle sentinelHandle = GsonUtils.getInstance().fromJson(rule.getHandle(), SentinelHandle.class);
+        sentinelHandle.checkData(sentinelHandle);
         return chain.execute(exchange).transform(new SentinelReactorTransformer<>(resourceName)).doOnSuccess(v -> {
             HttpStatus status = exchange.getResponse().getStatusCode();
             if (status == null || !status.is2xxSuccessful()) {
